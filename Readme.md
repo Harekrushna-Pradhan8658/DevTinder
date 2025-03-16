@@ -57,3 +57,6 @@ Node.js v18.20.5
 
 # npm i express
 # npm i -g nodemon
+
+# Routes
+- Order of the route is matter a lot
