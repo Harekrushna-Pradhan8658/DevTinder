@@ -1,3 +1,45 @@
+# DEVTINDER
+- Create an account
+- Login
+- Create your profile
+- Feed page - explore
+- Send connection request 
+- See due matches
+- See the request we've sent/recived
+- Update your profile
+
+# Tech planning
+- Microservices
+  - Frontend
+    - React
+  - Backtend
+    - NodeJS
+    - MongoDB
+
+# LLD - Low Level Design 
+# DB Design
+  - User
+    - FirstName
+    - LastName
+    - EmailId
+    - Password
+    - Age
+    - Gender
+    - 
+    - 
+  - Connection Request
+    - From UserId
+    - to User Id
+    - Status = Pending -> (Accepted-Rejected) , Ignored
+
+# API Design {REST API}
+  - GET ->	Retrieve data from the server	GET /users (Fetch all users)
+  - POST ->	Create a new resource	POST /users (Add a new user)
+  - PUT ->	Update an existing resource	PUT /users/1 (Update user with ID 1)
+  - DELETE ->	Remove a resource	DELETE /users/1 (Delete user with ID 1)
+  - PATCH -> It partially used, when you want to update a particular field of an existing resource instade of entire resources. 
+
+
 # npm init
 This utility will walk you through creating a package.json file.
 It only covers the most common items, and tries to guess sensible defaults.
