@@ -102,3 +102,29 @@ Node.js v18.20.5
 
 # Routes
 - Order of the route is matter a lot
+
+# NOTES
+
+app.use("/user",
+  (req, res, next) => {
+    console.log("handling the route user!");
+    next();
+  },
+  (req, res, next) => {
+    console.log("handling the route user two!");
+    next();
+  },
+  (req, res, next) => {
+    console.log("handling the route user three!");
+    next();
+  },
+  (req, res, next) => {
+    console.log("handling the route user!");
+    res.send("handling the user route")
+    # WHEN WE USE RES.SEND() AFTER THAT WHAT CODE WILL WRITE FURTHER WON'T BE WORK.
+  },
+  (req, res, next) => {
+    console.log("handling the route user!");
+    next();
+  },
+)
