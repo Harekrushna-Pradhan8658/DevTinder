@@ -128,3 +128,17 @@ app.use("/user",
     next();
   },
 )
+
+# Notes
+- Create a free cluster on mongoDB 
+- Install mangoose library - npm i mongoose
+- Connect your application to the database "Connection-url"/devTinder
+- Call the connectDB function and connect database before starting application on 7777.
+- Create user schema and user model
+- Create /signup API to add data to database
+- Push some document using API calls from postman
+
+# Inside database 
+- devTinder -> database
+- user -> collection
+- and data inside the collection -> document

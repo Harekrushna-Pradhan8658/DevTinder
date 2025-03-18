@@ -1,42 +1,35 @@
 const express = require("express");
-const { adminAuth, useAuth } = require("./middlewares/auth")
+const { adminAuth, useAuth } = require("./middlewares/auth");
+const connectDB = require("./config/database");
+const User = require("./models/user");
 
 const app = express();
 
-// Gracefully handle the error.
-app.use("/", (err, req, res, next) => {
-  if (err){
-    res.status(500).send("something went wrong!");
-  }
-})
-
-app.get("/getUserData", (req, res) => {
+app.post("/signup", async (req, res) => {
+  const user = new User({
+    firstName: "Sachin",
+    lastName: "Tendulkar",
+    email:"sachin@gmail.com",
+    password:"sachin10@234",
+  });
 
   try{
-    throw new Error ("jhbjhsbha");
-    res.send("user data send");
-
+    await user.save();
+    res.send("user added successfully!!!!");
   }catch(err){
-    res.status(500).send("Something went wrong2!");
+    res.status(400).send("Error saving the user:"+ err.message);
   }
-})
 
-
-
-// app.use("/admin", adminAuth);
-
-// app.get ("/user", useAuth, (req, res) => {
-//   res.send("User data send");
-// })
-
-// app.get("/admin/getAllData", (req, res) => {
-//   res.send("get all data")
-// });
-
-// app.get("/admin/deleteUser", (req, res) => {
-//   res.send("delete user!!!!!");
-// });
-
-app.listen(7777, () => {
-  console.log("Server is successfully running!");
 });
+
+
+connectDB()
+  .then(() => {
+    console.log("Database connection established...");
+    app.listen(7777, () => {
+      console.log("Server is successfully running!");
+    });
+  })
+  .catch((err) => {
+    console.log("Database cannot be connected...");
+  });
