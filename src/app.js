@@ -1,5 +1,4 @@
 const express = require("express");
-const { adminAuth, useAuth } = require("./middlewares/auth");
 const connectDB = require("./config/database");
 const User = require("./models/user");
 
@@ -70,12 +69,16 @@ app.patch("/user", async (req, res) => {
     const Id = req.body.userId;
 
     try{
-      const before = await User.findByIdAndUpdate(Id, data, {returnDocument: 'before'});
+      const before = await User.findByIdAndUpdate(Id, data, 
+      {
+        returnDocument: 'after',
+        runValidators: true,
+      });
       console.log(before);
       res.send("User updated successfully!")
     }
     catch(err){
-      res.status(400).send("Something went wrong!");
+      res.status(400).send("Update failed!: " + err.message);
     }
 })
 
