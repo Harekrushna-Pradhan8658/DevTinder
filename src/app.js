@@ -25,7 +25,7 @@ app.get("/user", async (req, res) => {
 
   try {
     const users = await User.findOne({ emailId: userEmail });
-    if (users.length === 0) {
+    if (!users) {
       res.status(404).send("User not found!");
     } else {
       res.send(users);
@@ -37,50 +37,62 @@ app.get("/user", async (req, res) => {
 
 // Feed API - GET/feed - get all the user from the database.
 app.get("/feed", async (req, res) => {
-
- try{
-  const users = await User.find({});
-  res.send(users);
- }
- catch(err){
-  res.status(400).send("Something went wrong!");
- }
-
+  try {
+    const users = await User.find({});
+    res.send(users);
+  } catch (err) {
+    res.status(400).send("Something went wrong!");
+  }
 });
 
 // Delete data of the user
 app.delete("/user", async (req, res) => {
-  console.log(req.body)
+  console.log(req.body);
   const Id = req.body.userId;
 
-  try{
-    const users = await User.findByIdAndDelete({_id:Id}); 
+  try {
+    const users = await User.findByIdAndDelete({ _id: Id });
     // const users = await User.findByIdAndDelete(userId);   we can use this or the line no.56 one.
     res.send("user delete successfully");
-   }
-   catch(err){
+  } catch (err) {
     res.status(400).send("Something went wrong!");
-   }
-})
+  }
+});
 
 // Update data of the user
-app.patch("/user", async (req, res) => {
-    const data = req.body;
-    const Id = req.body.userId;
+app.patch("/user/:userId", async (req, res) => {
+  const data = req.body;
+  console.log(data);
+  const Id = req.params?.userId;
 
-    try{
-      const before = await User.findByIdAndUpdate(Id, data, 
-      {
-        returnDocument: 'after',
-        runValidators: true,
-      });
-      console.log(before);
-      res.send("User updated successfully!")
+  try {
+    const ALLOWED_UPDATES = [
+      "photoURL",
+      "about",
+      "age",
+      "skills",
+    ];
+
+    const isUpdateAllowed = Object.keys(data).every((k) =>
+      ALLOWED_UPDATES.includes(k)
+    );
+    if (!isUpdateAllowed) {
+      throw new Error("Update not allowed!");
     }
-    catch(err){
-      res.status(400).send("Update failed!: " + err.message);
+    if(data?.skills?.length > 5){
+      throw new Error("You can't update more than 5 skills");
     }
-})
+
+    const before = await User.findByIdAndUpdate(Id, data, {
+      returnDocument: "after",
+      runValidators: true,
+    });
+    console.log(before);
+    res.send("User updated successfully!");
+  } catch (err) {
+    res.status(400).send("Update failed!: " + err.message);
+  }
+});
 
 connectDB()
   .then(() => {
